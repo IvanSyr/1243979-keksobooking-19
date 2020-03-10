@@ -62,5 +62,3 @@ for (var j = 0; j < 8; j++) {
   fragment.appendChild(renderPins(listOffers[j]));
 }
 map.querySelector('.map__pins').appendChild(fragment);
-
-document.querySelector('.map').classList.remove('map--faded');
