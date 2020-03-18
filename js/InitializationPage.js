@@ -1,39 +1,59 @@
 'use strict';
 
 (function () {
-  
-  var check = 3;
 
-  function aa (ch) {
-    var mapFilters = document.querySelector('.map__filters');
-    var mapFiltersSelect = mapFilters.querySelectorAll('select');
-    var mapFiltersFieldset = mapFilters.querySelectorAll('fieldset');
-    var form = document.querySelector('.ad-form');
-    var formFieldset = form.querySelectorAll('fieldset');
-    
-    function disablActiveElements (param) {
-      param.forEach(function(param) {
-        addOrRemoveAttribute(param);
-      }); 
-    };
+  var MainPin = {
+    WIDTH: 65,
+    HEIGHT: 65,
+  }
 
-    function addOrRemoveAttribute (elem, ch) {
-      if (2 < ch) {
-        elem.setAttribute('disabled', 'disabled');     
-      } else {
-        elem.removeAttribute('disabled', 'disabled');
-      }
-    };
-
-    disablActiveElements(mapFiltersSelect);  
-    disablActiveElements(mapFiltersFieldset);
-    disablActiveElements(formFieldset); 
-    addOrRemoveAttribute(form);
+  var ObjectsPage = {
+    mainPin: document.querySelector('.map__pin--main'),
+    addressForm: document.querySelector('#address')
   };
 
-  aa(check);
+
+  var formElements = {
+    mapFiltersSelect: document.querySelector('.map__filters').querySelectorAll('select'),
+    mapFiltersFieldset: document.querySelector('.map__filters').querySelectorAll('fieldset'),
+    formFieldset: document.querySelector('.ad-form').querySelectorAll('fieldset')
+  };
+
+  function setStartCoordinates () {
+    var startCoordinatesMainPinX = Math.round(ObjectsPage.mainPin.offsetLeft + (MainPin.WIDTH / 2));
+    var startCoordinatesMainPinY = Math.round(ObjectsPage.mainPin.offsetTop + (MainPin.HEIGHT / 2));
+    ObjectsPage.addressForm.setAttribute('value', startCoordinatesMainPinX + ', ' + startCoordinatesMainPinY);
+  };
+
+  function disablePage () {
+    function disablElementsOnPage (param) {
+      param.forEach(function(param) {
+        param.setAttribute('disabled', 'disabled');
+      });
+    };
+
+    for (var key in formElements) {
+      disablElementsOnPage(formElements[key]);
+    };
+  };
+
+  function activatePage () {
+    function activateElementsOnPage (param) {
+      param.forEach(function(param) {
+        param.removeAttribute('disabled');
+      });
+    };
+
+    for (var k in formElements) {
+      activateElementsOnPage(formElements[k]);
+    };
+  };
+
   window.InitializationPage = {
-      check: check,
-      aa: aa  
+    ObjectsPage: ObjectsPage,
+    formElements: formElements,
+    setStartCoordinates: setStartCoordinates,
+    disablePage: disablePage,
+    activatePage: activatePage
   };
 })();

@@ -7,25 +7,22 @@
   pinMain.addEventListener('keydown', onPageActivate);
 
   function onPageActivate (evt) {
-  	
-  	function pressEnter (evt) {
-  	  if ((evt.button === 0) || (evt.key === 'Enter')) {
-  	  	return true;
-  	  }
-  	  return false;
+  	if ((evt.button === 0) || (evt.key === 'Enter')) {
+	  	document.querySelector('.map').classList.remove('map--faded');
+      window.RenderPins.displayPinsOnMap();
+      window.InitializationPage.activatePage();
+
   	};
 
-  	pressEnter(evt) ? document.querySelector('.map').classList.remove('map--faded') : null;
-    
-  	var onPageActivated = function (upEvt) {
+    function onPageActivated (evtUp) {
   		document.removeEventListener('mousedown', onPageActivate);
   		document.removeEventListener('keydown', onPageActivate);
   		document.removeEventListener('mouseup', onPageActivated);
-  	}
+  	};
 
   	document.addEventListener('mouseup', onPageActivated);
   };
-  	
+
   window.ActivatePage = {
     onPageActivate: onPageActivate
   };
