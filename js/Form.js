@@ -8,6 +8,9 @@ var priceInput = form.querySelector('#price');
 var typeInput = form.querySelector('#type');
 var roomNumberInput = form.querySelector('#room_number');
 var capacityInput = form.querySelector('#capacity');
+var timeinInput = form.querySelector('#timein');
+var timeoutInput = form.querySelector('#timeout');
+
 
 window.InitializationPage.setStartCoordinates()
 
@@ -89,58 +92,70 @@ function validateType () {
 };
 
 function validateCapacity () {
+  var selectChengeImput = form.querySelectorAll('.select__chenge');
 
-  roomNumberInput.addEventListener('change', function (evt) {
-    var roomIndexSelectValue = roomNumberInput.options.selectedIndex;
-    var roomNumberSelectValue = roomNumberInput.options[roomIndexSelectValue].value;
-    var capacityIndexSelectValue = capacityInput.options.selectedIndex;
-    var capacitySelectValue = capacityInput.options[capacityIndexSelectValue].value;
-    var target = evt.target;
-    if (target) {
-      for (var i = 0; i < capacityInput.options.length; i++) {
-        capacityInput.options[i].removeAttribute('disabled', true);
-        if (capacityInput.options[i].value > roomNumberSelectValue) {
-          capacityInput.options[i].setAttribute('disabled', true);
-        }
-      }
-      if (roomNumberSelectValue < capacitySelectValue) {
-        target.setCustomValidity('Неподходящее количество комнат');
+  for (var i = 0; i < selectChengeImput.length; i++) {
+    selectChengeImput[i].addEventListener('change', function () {
+      var roomIndexSelectValue = roomNumberInput.options.selectedIndex;
+      var roomNumberSelectValue = roomNumberInput.options[roomIndexSelectValue].value;
+      var capacityIndexSelectValue = capacityInput.options.selectedIndex;
+      var capacitySelectValue = capacityInput.options[capacityIndexSelectValue].value;
+
+      if ((capacitySelectValue !== '0' && roomNumberSelectValue == '100') || (capacitySelectValue == '0' && roomNumberSelectValue !== '100')) {
+        capacityInput.setCustomValidity('Невалидное значение: что-то не равно 100');
+      } else if (roomNumberSelectValue <= capacitySelectValue) {
+          capacityInput.setCustomValidity('Невалидное значение: комнат меньше гостей');
       } else {
-        target.setCustomValidity('');
+          capacityInput.setCustomValidity('');
+        }
+    });
+  };
+};
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+function validateTime () {
+  var selectTarget = form.querySelector('.time__chenge');
+
+  selectTarget.addEventListener('change', function (evt) {
+    var timeoutIndexSelectValue = timeoutInput.options.selectedIndex;
+    var timeoutSelectValue = timeoutInput.options[timeoutIndexSelectValue].value;
+    var timeinIndexSelectValue = timeinInput.options.selectedIndex;
+    var timeinSelectValue = timeinInput.options[timeinIndexSelectValue].value;
+    var target = evt.target;
+
+    function selectTime (a, b) {
+      for (var i = 0; i < a.length; i++) {
+          a[i].removeAttribute('selected');
+        if (a[i].value === b) {
+          a[i].setAttribute('selected', true);
+        }
       }
     }
 
-    // for (var i = 0; i < capacityInput.options.length; i++) {
-    //   capacityInput.options[i].setAttribute('disabled', 'disabled');
-    //   if (capacityInput.options[i].value <= roomNumberSelectValue && capacityInput.options[i].value != 0) {
-    //     capacityInput.options[i].removeAttribute('disabled', true);
-    //   };
-    // };
-
-    // if (roomNumberSelectValue == 0) {
-    //     capacityInput.options[3].removeAttribute('disabled', true);
-    //   };
-
-    // if (roomNumberSelectValue >= capacitySelectValue) {
-    //   capacityInput.setCustomValidity('');
-    // } else {
-    //   capacityInput.setCustomValidity('Невалидное число гостей ');
-    // }
+    if (true) {
+      selectTime(timeoutInput.options, timeinSelectValue);
+    } else {
+      selectTime(timeinInput.options, timeoutSelectValue);
+    }
 
   });
 };
 
-validateCapacity();
+//////////////////////////////////////////////////////////////////////////////
+
 validateTitle ();
 validatePrice();
 validateType();
-
+validateCapacity();
+validateTime();
 
 window.Form = {
   validateTitle: validateTitle,
   validatePrice: validatePrice,
   validateType: validateType,
-  validateCapacity: validateCapacity
+  validateCapacity: validateCapacity,
+  validateTime: validateTime
 };
 
 })();
