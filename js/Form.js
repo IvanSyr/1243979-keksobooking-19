@@ -11,9 +11,7 @@ var capacityInput = form.querySelector('#capacity');
 var timeinInput = form.querySelector('#timein');
 var timeoutInput = form.querySelector('#timeout');
 
-
 window.InitializationPage.setStartCoordinates()
-
 window.InitializationPage.disablePage();
 
 function validateTitle () {
